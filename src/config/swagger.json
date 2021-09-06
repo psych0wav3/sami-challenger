@@ -1,0 +1,1258 @@
+{
+  "openapi": "3.0.0",
+
+  "info": {
+    "title": "{Titulo}",
+    "description": "{Descrição}",
+    "version": "{Version}"
+  },
+  "paths":{
+
+    "/assessment": {
+      "post":{
+        "tags":["Avaliação"],
+        "summary":"Criar",
+        "description": "Inserir uma avaliação de funcionario",
+        "parameters":[{
+          "in": "header",
+          "name": "Authorization",
+          "type": "string",
+          "required": true
+
+      }],
+        "requestBody":{
+          "content": {
+            "application/json": {
+              "schema":{
+                "type": "object",
+                "properties": {
+                  "rater": {
+                    "type": "string"
+                  },
+                  "rated": {
+                    "type": "string"
+                  },
+                  "coments": {
+                    "type": "string"
+                  },
+                  "note": {
+                    "type": "number"
+                  },
+                  "rater_store": {
+                    "type": "string"
+                  },
+                  "rated_store": {
+                    "type": "string"
+                  }
+                },
+                "example":{
+                  "rater": "Fulano da Silva",
+                  "rated": "Ciclano da Silva",
+                  "coments": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+                  "note": 8,
+                  "rater_store": "L1 BUTANTA",
+                  "rated_store": "l6 PIRAJUSSARA"
+                }
+              }
+            }
+          }
+        },
+        "responses":{
+          "201": {
+            "description": "Created"
+          },
+          "500":{
+            "description": "Internal server error"
+          },
+          "401":{
+            "description": "Unauthorized",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "type": "object",
+                  "properties": {
+                    "error": "string"
+                  },
+                  "example":{
+                    "error": "invalid token!"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get":{
+        "tags":["Avaliação"],
+        "summary":"Listar",
+        "description": "Lista todas as avaliações, se não for definido o limit ira listar todos. (Recomendamos passar um limite padão)",
+        "parameters":[{
+          "in": "query",
+          "name": "limit",
+          "type": "string"
+
+      },
+      {
+        "in": "header",
+        "name": "Authorization",
+        "type": "string",
+        "required": true
+
+    }],
+        "responses":{
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items":{
+                    "type": "object",
+                    "properties":{
+                      "rater": {
+                        "type": "string"
+                      },
+                      "rated": {
+                        "type": "string"
+                      },
+                      "coments": {
+                        "type": "string"
+                      },
+                      "note": {
+                        "type": "number"
+                      },
+                      "rater_store": {
+                        "type": "string"
+                      },
+                      "rated_store": {
+                        "type": "string"
+                      },
+                      "date": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404":{
+            "description": "Nothing to show here!"
+          },
+          "500":{
+            "description": "Internal server error"
+          },
+          "401":{
+            "description": "Unauthorized",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "type": "object",
+                  "properties": {
+                    "error": "string"
+                  },
+                  "example":{
+                    "error": "invalid token!"
+                  }
+                }
+              }
+            }
+          }
+        }
+
+      }
+    },
+    "assessment/filter":{
+      "get":{
+        "tags":["Avaliação"],
+        "summary":"Filtrar",
+        "description": "Filtra as avaliações por parametros, todos as querys devem existir porem apenas filter e note precisam ter um valor default ",
+        "parameters":[
+          {
+            "name": "fitler",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "example":{
+              "filter": "bigger | less | equal"
+            }
+          },
+          {
+            "name": "note",
+            "in": "query",
+            "required": true,
+            "type": "number",
+            "example":{
+              "note": 8
+            }
+          },
+          {
+            "name": "rater",
+            "in": "query",
+            "type": "string",
+            "required":true,
+            "example":{
+              "rater": "Fulano da Silva"
+            }
+          },
+          {
+            "name": "rated",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "example":{
+              "rater": "Ciclano da Silva"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string",
+            "required": true
+
+        }
+        ],
+        "responses":{
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items":{
+                    "type": "object",
+                    "properties":{
+                      "rater": {
+                        "type": "string"
+                      },
+                      "rated": {
+                        "type": "string"
+                      },
+                      "coments": {
+                        "type": "string"
+                      },
+                      "note": {
+                        "type": "number"
+                      },
+                      "rater_store": {
+                        "type": "string"
+                      },
+                      "rated_store": {
+                        "type": "string"
+                      },
+                      "date": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "206":{
+            "description": "You need provide a valid filter method"
+          },
+          "500": {
+            "description": "Internal server error"
+          },
+          "416":{
+            "description":"You need provide some filters, see docs to bo sure if is right!"
+          },
+          "401":{
+            "description": "Unauthorized",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "type": "object",
+                  "properties": {
+                    "error": "string"
+                  },
+                  "example":{
+                    "error": "invalid token!"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "assessment/download":{
+      "get":{
+        "tags":["Avaliação"],
+        "summary":"Download Relatorio CSV",
+        "description": "Filtra as avaliações por parametros, todos as querys devem existir porem apenas filter e note precisam ter um valor default ",
+        "parameters":[
+
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string",
+            "required": true
+
+        }
+        ],
+        "requestBody":{
+          "content": {
+            "application/json": {
+              "schema":{
+                "type": "array",
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "rater": {
+                        "type": "string"
+                      },
+                      "rated": {
+                        "type": "string"
+                      },
+                      "coments": {
+                        "type": "string"
+                      },
+                      "note": {
+                        "type": "number"
+                      },
+                      "rater_store": {
+                        "type": "string"
+                      },
+                      "rated_store": {
+                        "type": "string"
+                      }
+                    }
+
+                  },
+
+                "example":[{
+                  "id": "7070cf05-49e6-469d-9a93-77f2f1a8ae1a",
+                  "rater": "Fulano da Silva",
+                  "rated": "Ciclano da Silva",
+                  "coments": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+                  "note": 8,
+                  "rater_store": "L1 BUTANTA",
+                  "rated_store": "l6 PIRAJUSSARA"
+                },
+                {
+                  "id": "7070cf05-49e6-469d-9a93-77f2f1a8ae1a",
+                  "rater": "Fulano da Silva",
+                  "rated": "Ciclano da Silva",
+                  "coments": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+                  "note": 8,
+                  "rater_store": "L1 BUTANTA",
+                  "rated_store": "l6 PIRAJUSSARA"
+                }
+              ]
+              }
+            }
+          }
+        },
+        "responses":{
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/csv": {
+
+              }
+            }
+          },
+
+          "500": {
+            "description": "Internal server error"
+          },
+          "401":{
+            "description": "Unauthorized",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "type": "object",
+                  "properties": {
+                    "error": "string"
+                  },
+                  "example":{
+                    "error": "invalid token!"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user":{
+      "post":{
+        "tags":["Usuarios"],
+        "summary":"Criar",
+        "description": "Criar um novo usuario",
+        "parameters":[{
+          "in": "header",
+          "name": "Authorization",
+          "type": "string",
+          "required": true
+
+      }],
+        "requestBody":{
+          "content": {
+            "application/json": {
+              "schema":{
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "username": {
+                    "type": "string"
+                  },
+                  "passwd": {
+                    "type": "string"
+                  },
+                  "access": {
+                    "type": "string"
+                  }
+                },
+                "example":{
+                  "name": "Fulano da Silva",
+                  "username": "fsilva",
+                  "passwd": "minhaSenha123",
+                  "access": "adm"
+                }
+              }
+            }
+          }
+        },
+        "responses":{
+          "201": {
+            "description": "Created"
+          },
+          "405":{
+            "description": "Name or user already exist."
+          },
+          "404":{
+            "description":"Type access not exist."
+          },
+          "401":{
+            "description": "Unauthorized",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "type": "object",
+                  "properties": {
+                    "error": "string"
+                  },
+                  "example":{
+                    "error": "invalid token!"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get":{
+        "tags":["Usuarios"],
+        "summary":"Listar",
+        "description": "Listar todos ou filtrar usuarios",
+        "parameters":[
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "name",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "responses":{
+          "200": {
+            "description": "OK",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "type":"array",
+                  "items":{
+                    "type":"object",
+                    "properties":{
+                      "id":{
+                        "type": "string"
+                      },
+                      "name":{
+                        "type": "string"
+                      },
+                      "created_at":{
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+
+          "401":{
+            "description": "Unauthorized",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "type": "object",
+                  "properties": {
+                    "error": "string"
+                  },
+                  "example":{
+                    "error": "invalid token!"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put":{
+        "tags":["Usuarios"],
+        "summary":"Atualizar",
+        "description": "Atualizar senha do usuario logado",
+        "parameters":[
+          {
+            "in":"header",
+            "name": "Authorization",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "requestBody":{
+          "content":{
+            "application/json":{
+              "schema":{
+                "type":"object",
+                "properties":{
+                  "id": {
+                    "type": "fe7bdb27-e4bb-4e33-9efd-c926ab6681e7"
+                  },
+                  "passwd": {
+                    "type": "string"
+                  }
+                },
+                "example":{
+                  "id":"7070cf05-49e6-469d-9a93-77f2f1a8ae1a",
+                  "passwd": "minhaSenha123"
+                }
+              }
+            }
+          }
+        },
+        "responses":{
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "User not found!"
+          },
+          "500": {
+            "description": "Internal server error!"
+          },
+          "401":{
+            "description": "Unauthorized",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "type": "object",
+                  "properties": {
+                    "error": "string"
+                  },
+                  "example":{
+                    "error": "invalid token!"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/{id}":{
+      "delete":{
+        "tags": ["Usuarios"],
+        "summary":"Deletar",
+        "description":"Deletar um usuário",
+        "parameters":[{
+          "in":"path",
+          "name": "id",
+          "type":"string",
+          "required": true
+        },
+        {
+          "in": "header",
+          "name": "Authorization",
+          "type": "string",
+          "required": true
+        }],
+        "responses":{
+
+          "200":{
+            "description": "Success"
+          },
+          "406":{
+            "description":"ID is not valid for this method."
+          },
+          "404":{
+            "description":"This ID not found, please provide a existent ID."
+          },
+          "500":{
+            "description":"Internal server Error"
+          },
+          "401":{
+            "description": "Unauthorized",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "type": "object",
+                  "properties": {
+                    "error": "string"
+                  },
+                  "example":{
+                    "error": "invalid token!"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/contact":{
+      "post":{
+        "tags":["Contatos"],
+        "summary":"Criar",
+        "description": "Criar um novo contato",
+        "parameters":[{
+          "in": "header",
+          "name": "Authorization",
+          "type": "string",
+          "required": true
+
+      }],
+        "requestBody":{
+          "content": {
+            "application/json": {
+              "schema":{
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "string"
+                  },
+                  "id_store": {
+                    "type": "string"
+                  },
+                  "service": {
+                    "type": "string"
+                  },
+                  "responsability": {
+                    "type": "string"
+                  }
+                },
+                "example":{
+                  "name": "Fulano da Silva",
+                  "phone": "(11)99999-9999",
+                  "id_store": "7070cf05-49e6-469d-9a93-77f2f1a8ae1a",
+                  "service": "Setor01",
+                  "responsability": "função01"
+                }
+              }
+            }
+          }
+        },
+        "responses":{
+          "201": {
+            "description": "Created"
+          },
+          "409":{
+            "description": "Phone number already exist or store not register"
+          },
+          "500":{
+            "description":"Internal server error"
+          },
+          "401":{
+            "description": "Unauthorized",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "type": "object",
+                  "properties": {
+                    "error": "string"
+                  },
+                  "example":{
+                    "error": "invalid token!"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get":{
+        "tags":["Contatos"],
+        "summary":"Listar",
+        "description": "Listar todos os contatos, se não for passado a query name listará todos os contatos",
+        "parameters":[{
+          "in": "header",
+          "name": "Authorization",
+          "type": "string",
+          "required": true
+
+      },
+      {
+        "in": "query",
+        "name": "name",
+        "type": "string",
+        "description":"Filtra por parte do nome"
+    }
+    ],
+        "responses":{
+          "200": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items":{
+                    "type": "object",
+                    "properties":{
+                      "id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "phone": {
+                        "type": "string"
+                      },
+                      "service": {
+                        "type": "number"
+                      },
+                      "responsability": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409":{
+            "description": "Phone number already exist or store not register"
+          },
+          "500":{
+            "description":"Internal server error"
+          },
+          "401":{
+            "description": "Unauthorized",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "type": "object",
+                  "properties": {
+                    "error": "string"
+                  },
+                  "example":{
+                    "error": "invalid token!"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put":{
+        "tags":["Contatos"],
+        "summary":"Atualizar",
+        "description": "atualizar contato existente",
+        "parameters":[{
+          "in": "header",
+          "name": "Authorization",
+          "type": "string",
+          "required": true
+
+      }],
+        "requestBody":{
+          "content": {
+            "application/json": {
+              "schema":{
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "string"
+                  },
+                  "id_store": {
+                    "type": "string"
+                  },
+                  "service": {
+                    "type": "string"
+                  },
+                  "responsability": {
+                    "type": "string"
+                  }
+                },
+                "example":{
+                  "id":"7070cf05-49e6-469d-9a93-77f2f1a8ae1a",
+                  "name": "Fulano da Silva",
+                  "phone": "(11)99999-9999",
+                  "id_store": "7070cf05-49e6-469d-9a93-77f2f1a8ae1a",
+                  "service": "Setor01",
+                  "responsability": "função01"
+                }
+              }
+            }
+          }
+        },
+        "responses":{
+          "204": {
+            "description": "Success"
+          },
+          "404":{
+            "description": "Id provide is not register!"
+          },
+          "500":{
+            "description":"Internal server error"
+          },
+          "401":{
+            "description": "Unauthorized",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "type": "object",
+                  "properties": {
+                    "error": "string"
+                  },
+                  "example":{
+                    "error": "invalid token!"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/contact/{id}":{
+      "delete":{
+        "tags":["Contatos"],
+        "summary":"Deletar",
+        "description": "Deletar um contato",
+        "parameters":[{
+          "in": "header",
+          "name": "Authorization",
+          "type": "string",
+          "required": true
+      },
+      {
+        "in": "path",
+        "name": "id",
+        "type": "string",
+        "required": true
+    }
+    ],
+        "responses":{
+          "204": {
+            "description": "Deleted"
+          },
+          "404":{
+            "description": "ID not regiter!'"
+          },
+          "500":{
+            "description":"Internal server error"
+          },
+          "401":{
+            "description": "Unauthorized",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "type": "object",
+                  "properties": {
+                    "error": "string"
+                  },
+                  "example":{
+                    "error": "invalid token!"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/showcase":{
+      "post":{
+        "tags":["Inventario"],
+        "summary": "Inserir",
+        "description":"Iserir um novo item de conferencia",
+        "parameters":[{
+          "in": "header",
+          "name": "Authorization",
+          "type": "string",
+          "required": true
+      }
+    ],
+    "requestBody":{
+      "content": {
+        "application/json": {
+          "schema":{
+            "type": "object",
+            "properties": {
+              "barcode": {
+                "type": "string"
+              },
+              "store": {
+                "type": "number"
+              }
+            },
+            "example":{
+              "barcode": "7890236853926",
+              "store": 4
+            }
+          }
+        }
+      }
+    },
+    "responses":{
+      "200":{
+        "description":"Success",
+        "content":{
+          "application/json":{
+            "schema":{
+              "type":"array",
+              "items":{
+                "type":"object",
+                "properties":{
+                  "date": {
+                    "type": "string"
+                  },
+                  "store": {
+                    "type": "number"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "codeInt": {
+                    "type": "number"
+                  },
+                  "situation": {
+                    "type": "boolean"
+                  },
+                  "saldo": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "406":{
+        "description": "You need provide a valid barcode."
+      },
+      "500":{
+        "description":"Internal server error"
+      },
+      "401":{
+        "description": "Unauthorized",
+        "content":{
+          "application/json":{
+            "schema":{
+              "type": "object",
+              "properties": {
+                "error": "string"
+              },
+              "example":{
+                "error": "invalid token!"
+              }
+            }
+          }
+        }
+      }
+    }
+      }
+
+    },
+    "/showcase/stores":{
+      "get":{
+        "tags":["Inventario"],
+        "summary": "Lojas",
+        "description":"Listar todas as lojas",
+        "parameters":[{
+          "in": "header",
+          "name": "Authorization",
+          "type": "string",
+          "required": true
+      }
+    ],
+    "responses":{
+      "200":{
+        "description":"Success",
+        "content":{
+          "application/json":{
+            "schema":{
+              "type":"array",
+              "items":{
+                "type":"object",
+                "properties":{
+                  "store": {
+                    "type": "string"
+                  },
+                  "id_store":{
+                    "type":"number"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "500":{
+        "description":"Internal server error"
+      },
+      "401":{
+        "description": "Unauthorized",
+        "content":{
+          "application/json":{
+            "schema":{
+              "type": "object",
+              "properties": {
+                "error": "string"
+              },
+              "example":{
+                "error": "invalid token!"
+              }
+            }
+          }
+        }
+      }
+    }
+      }
+    },
+    "/showcase/filter":{
+      "get":{
+        "tags":["Inventario"],
+        "summary": "Filtro",
+        "description":"Retorna item que não foram conferidas",
+        "parameters":[{
+          "in": "header",
+          "name": "Authorization",
+          "type": "string",
+          "required": true
+      }
+    ],
+    "requestBody":{
+      "content": {
+        "application/json": {
+          "schema":{
+            "type": "object",
+            "properties": {
+              "date": {
+                "type": "string"
+              },
+              "store": {
+                "type": "number"
+              }
+            },
+            "example":{
+              "date": "DD/MM/YYYY",
+              "store": 4
+            }
+          }
+        }
+      }
+    },
+    "responses":{
+      "200":{
+        "description":"Success",
+        "content":{
+          "application/json":{
+            "schema":{
+              "type":"array",
+              "items":{
+                "type":"object",
+                "properties":{
+                  "description": {
+                    "type": "string"
+                  },
+                  "codeint": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "406":{
+        "description": "You need provide a valid barcode."
+      },
+      "500":{
+        "description":"Internal server error"
+      },
+      "401":{
+        "description": "Unauthorized",
+        "content":{
+          "application/json":{
+            "schema":{
+              "type": "object",
+              "properties": {
+                "error": "string"
+              },
+              "example":{
+                "error": "invalid token!"
+              }
+            }
+          }
+        }
+      }
+    }
+      }
+    },
+    "/showcase/dates":{
+      "get":{
+        "tags":["Inventario"],
+        "summary": "Datas",
+        "description":"Listar datas dos inventarios, , se não for passado o ID da loja sera listado todas as datas",
+        "parameters":[{
+          "in": "header",
+          "name": "Authorization",
+          "type": "string",
+          "required": true
+      },
+      {
+        "in": "query",
+          "name": "storeId",
+          "type": "string",
+          "required": true,
+          "description": "Id da loja"
+      }
+    ],
+    "responses":{
+      "200":{
+        "description":"Success",
+        "content":{
+          "application/json":{
+            "schema":{
+              "type":"array",
+              "items":[]
+            }
+          }
+        }
+      },
+      "500":{
+        "description":"Internal server error"
+      },
+      "401":{
+        "description": "Unauthorized",
+        "content":{
+          "application/json":{
+            "schema":{
+              "type": "object",
+              "properties": {
+                "error": "string"
+              },
+              "example":{
+                "error": "invalid token!"
+              }
+            }
+          }
+        }
+      }
+    }
+      }
+    },
+    "showcase/download":{
+      "get":{
+        "tags":["Inventario"],
+        "summary":"Download Relatorio CSV",
+        "description": "Filtra as avaliações por parametros, todos as querys devem existir porem apenas filter e note precisam ter um valor default ",
+        "parameters":[
+
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string",
+            "required": true
+
+        }
+        ],
+        "requestBody":{
+          "content": {
+            "application/json": {
+              "schema":{
+                  "type": "object",
+                    "properties": {
+                      "codeint": {
+                        "type": "number"
+                      },
+                      "description": {
+                        "type": "string"
+                      }
+                  }
+
+                  },
+
+                "example":[{
+                  "codeint": 1455,
+                  "description": "Fulano da Silva"
+                },
+                {
+                  "codeint": 1455,
+                  "description": "Fulano da Silva"
+                }
+              ]
+              }
+            }
+          },
+          "responses":{
+            "200": {
+              "description": "Success",
+              "content": {
+                "text/csv": {
+
+                }
+              }
+            },
+
+            "500": {
+              "description": "Internal server error"
+            },
+            "401":{
+              "description": "Unauthorized",
+              "content":{
+                "application/json":{
+                  "schema":{
+                    "type": "object",
+                    "properties": {
+                      "error": "string"
+                    },
+                    "example":{
+                      "error": "invalid token!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+
+      }
+    }
+  }
+
+
+
