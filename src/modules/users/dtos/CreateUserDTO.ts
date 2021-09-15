@@ -1,6 +1,4 @@
-export class User {
-  public id: string;
-
+export class CreateUserDTO {
   public name: string;
 
   public cpf: number;

@@ -1,4 +1,4 @@
-export class User {
+export class UpdateUserDTO {
   public id: string;
 
   public name: string;
